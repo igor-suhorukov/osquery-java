@@ -24,17 +24,16 @@ package com.questdb.griffin.engine.functions.osquery;
  ******************************************************************************/
 
 
-import com.questdb.cairo.*;
-import com.questdb.cairo.sql.Function;
-import com.questdb.cairo.sql.NoRandomAccessRecordCursor;
-import com.questdb.cairo.sql.Record;
-import com.questdb.cairo.sql.RecordMetadata;
-import com.questdb.griffin.FunctionFactory;
-import com.questdb.griffin.engine.functions.CursorFunction;
-import com.questdb.griffin.engine.functions.GenericRecordCursorFactory;
-import com.questdb.ql.NullRecord;
-import com.questdb.std.IntIntHashMap;
-import com.questdb.std.ObjList;
+import io.questdb.cairo.*;
+import io.questdb.cairo.sql.Function;
+import io.questdb.cairo.sql.NoRandomAccessRecordCursor;
+import io.questdb.cairo.sql.Record;
+import io.questdb.cairo.sql.RecordMetadata;
+import io.questdb.griffin.FunctionFactory;
+import io.questdb.griffin.engine.functions.CursorFunction;
+import io.questdb.griffin.engine.functions.GenericRecordCursorFactory;
+import io.questdb.std.IntIntHashMap;
+import io.questdb.std.ObjList;
 import lombok.SneakyThrows;
 import net.melastmohican.osquery.ClientManager;
 import org.apache.thrift.transport.TTransportException;
@@ -58,7 +57,7 @@ public class OsqueryFunctionFactory implements FunctionFactory {
         jdbcToQuestColumnType.put(DOUBLE.ordinal(), ColumnType.DOUBLE);
     }
 
-    private static final NullRecord NULL = NullRecord.INSTANCE;
+    private static final NullColumn NULL = NullColumn.INSTANCE;
 
     @Override
     public String getSignature() {
@@ -137,6 +136,11 @@ public class OsqueryFunctionFactory implements FunctionFactory {
         @Override
         public void toTop() {
             record.init();
+        }
+
+        @Override
+        public long size() {
+            return -1;
         }
     }
 
